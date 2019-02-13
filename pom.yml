@@ -1,0 +1,55 @@
+modelEncoding: UTF-8
+modelVersion: 4.0.0
+
+groupId: com.github.flyway
+artifactId: flyway-community-mysql
+version: 5.2.4
+packaging: pom
+
+name: Flyway command-line Wrapper
+description: Flyway command-line Wrapper
+
+properties:
+  java.version: 11
+  maven.compiler.release: ${java.version}
+  maven.compiler.source: ${java.version}
+  maven.compiler.target: ${java.version}
+  project.build.sourceEncoding: UTF-8
+  maven.compiler.encoding: ${project.build.sourceEncoding}
+  project.reporting.outputEncoding: ${project.build.sourceEncoding}
+  flyway-version: 5.2.4
+
+build:
+  plugins:
+  -
+    groupId: org.apache.maven.plugins
+    artifactId: maven-enforcer-plugin
+    version: 1.4.1
+    executions:
+    -
+      id: enforce-java
+      goals:
+      - enforce
+    configuration:
+      rules:
+        requireJavaVersion:
+          version: 11
+  -
+    groupId: org.apache.maven.plugins
+    artifactId: maven-dependency-plugin
+    version: 3.1.1
+    executions:
+    -
+      phase: package
+      goals:
+      - unpack
+      configuration:
+        artifactItems:
+        -
+          groupId: org.flywaydb
+          artifactId: flyway-commandline
+          version: ${flyway-version}
+          type: zip
+          includes: "**/drivers/mysql-*.jar, **/lib/community/*"
+
+

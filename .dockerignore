@@ -1,0 +1,10 @@
+.idea
+.git
+target
+Dockerfile
+*.tmp
+
+# No need to copy wrapper because build is made inside maven image
+.mvn/wrapper
+mvnw
+mvnw.cmd
