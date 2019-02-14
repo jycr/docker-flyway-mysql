@@ -25,15 +25,17 @@ RUN mkdir -p /app/jars
 #FROM gcr.io/distroless/java
 #FROM openjdk:11-slim
 FROM gcr.io/distroless/base
-COPY --from=build-env /opt/workspace/target/dependency/flyway-* /app/
-COPY --from=build-env /opt/workspace/target/java-runtime /java-runtime
-COPY --from=build-env /app/jars /app/jars
 
 # Note: neither gcr.io/distroless/base nor the jlink build do include libz.so needed by the java executable, thus we copy it from the system
 # See: https://github.com/GoogleContainerTools/distroless/issues/217
 COPY --from=build-env /lib/x86_64-linux-gnu/libz.so.1 /lib/x86_64-linux-gnu/libz.so.1
 COPY --from=build-env /lib/x86_64-linux-gnu/libgcc_s.so.1 /lib/x86_64-linux-gnu/libgcc_s.so.1
 COPY --from=build-env /usr/lib/x86_64-linux-gnu/libstdc++.so.6 /usr/lib/x86_64-linux-gnu/libstdc++.so.6
+
+COPY --from=build-env /opt/workspace/target/java-runtime /java-runtime
+
+COPY --from=build-env /app/jars /app/jars
+COPY --from=build-env /opt/workspace/target/dependency/flyway-* /app/
 
 WORKDIR /app
 
